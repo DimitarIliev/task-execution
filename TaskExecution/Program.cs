@@ -8,9 +8,15 @@ await SayHello();
 
 await SayGoodbye();
 
+Console.WriteLine();
+Console.WriteLine($"Execution time is around {stopwatch.Elapsed.Seconds} seconds");
+Console.WriteLine();
+
 stopwatch.Stop();
 
-Console.WriteLine($"Execution time is around {stopwatch.Elapsed.Seconds} seconds");
+stopwatch.Reset();
+
+stopwatch.Start();
 
 var hello = SayHello();
 var goodbye = SayGoodbye();
@@ -20,18 +26,15 @@ var tasks = new List<Task>
     hello, goodbye
 };
 
-stopwatch.Reset();
-
-stopwatch.Start();
-
 await Task.WhenAll(tasks);
 
 //Task.WaitAll(tasks.ToArray());
 
-stopwatch.Stop();
-
+Console.WriteLine();
 Console.WriteLine($"Execution time is around {stopwatch.Elapsed.Seconds} seconds");
+Console.WriteLine();
 
+stopwatch.Stop();
 
 //Simple methods for demo
 async Task SayHello()
