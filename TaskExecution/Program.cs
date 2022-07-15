@@ -4,12 +4,18 @@ var stopwatch = new Stopwatch();
 
 stopwatch.Start();
 
-await SayHello();
+//Start washing machine for clothes
+await WashClothes();
 
-await SayGoodbye();
+Console.WriteLine("Washing of clothes finished!");
+
+//Make breakfast while clothes wash
+await MakeBreakfast();
+
+Console.WriteLine("Making breakfast finished!");
 
 Console.WriteLine();
-Console.WriteLine($"Execution time is around {stopwatch.Elapsed.Seconds} seconds");
+Console.WriteLine($"Both tasks completed in around {stopwatch.Elapsed.Seconds} seconds");
 Console.WriteLine();
 
 stopwatch.Stop();
@@ -18,34 +24,50 @@ stopwatch.Reset();
 
 stopwatch.Start();
 
-var hello = SayHello();
-var goodbye = SayGoodbye();
+var washClothes = WashClothes();
+var makeBreakfast = MakeBreakfast();
 
 var tasks = new List<Task>
 {
-    hello, goodbye
+    makeBreakfast, washClothes
 };
+
+while (tasks.Count > 0)
+{
+    var finishedTask = await Task.WhenAny(tasks);
+
+    if (finishedTask == washClothes)
+    {
+        Console.WriteLine("Washing of clothes finished!");
+    }
+    else if (finishedTask == makeBreakfast)
+    {
+        Console.WriteLine("Making breakfast finished!");
+    }
+
+    tasks.Remove(finishedTask);
+}
 
 await Task.WhenAll(tasks);
 
 //Task.WaitAll(tasks.ToArray());
 
 Console.WriteLine();
-Console.WriteLine($"Execution time is around {stopwatch.Elapsed.Seconds} seconds");
+Console.WriteLine($"Both tasks completed in around {stopwatch.Elapsed.Seconds} seconds");
 Console.WriteLine();
 
 stopwatch.Stop();
 
 //Simple methods for demo
-async Task SayHello()
+async Task MakeBreakfast()
 {
+    Console.WriteLine("Making breakfast started!");
     await Task.Delay(3000);
-    Console.WriteLine("Hello readers of the article!");
 }
 
-async Task SayGoodbye()
+async Task WashClothes()
 {
-    await Task.Delay(5000);
-    Console.WriteLine("Goodbye readers of the article!");
+    Console.WriteLine("Washing of clothes started!");
+    await Task.Delay(7000);
 }
 
