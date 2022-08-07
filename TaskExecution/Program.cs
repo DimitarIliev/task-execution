@@ -48,10 +48,6 @@ while (tasks.Count > 0)
     tasks.Remove(finishedTask);
 }
 
-await Task.WhenAll(tasks);
-
-//Task.WaitAll(tasks.ToArray());
-
 Console.WriteLine();
 Console.WriteLine($"Both tasks completed in around {stopwatch.Elapsed.Seconds} seconds");
 Console.WriteLine();
